@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AI Catalyst Studio — Backtest Reports</title>
+  <style>
+    :root { --fg:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#fff; }
+    html,body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;}
+    .wrap{max-width:980px;margin:36px auto;padding:0 18px;}
+    header{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
+    header img{width:56px;height:auto;}
+    h1{font-size:20px;margin:0;}
+    .sub{color:var(--muted);font-size:13px;margin-top:2px;}
+    .card{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.04);}
+    table{width:100%;border-collapse:collapse;font-size:14px;}
+    thead th{font-weight:600;text-align:left;border-bottom:1px solid var(--line);padding:10px 8px;background:#f8fafc;}
+    tbody td{border-bottom:1px solid var(--line);padding:10px 8px;vertical-align:top;}
+    .tag{font-size:12px;color:#334155;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:999px;padding:2px 8px;white-space:nowrap;}
+    .muted{color:var(--muted);}
+    footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center;}
+    a{color:#0f172a;text-decoration:underline;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <img src="AICS_Logo.jpeg" alt="AI Catalyst Studio Logo" />
+      <div>
+        <h1>AI Catalyst Studio — Backtest Reports</h1>
+        <div class="sub">Equity curves & performance metrics (CAGR, Sharpe, Max DD). Fully automated strategies.</div>
+      </div>
+    </header>
+
+    <div class="card">
+      <table id="tbl">
+        <thead>
+          <tr>
+            <th>Strategy</th>
+            <th>Assets</th>
+            <th>Type</th>
+            <th>Backtest Period</th>
+            <th>Equity Curve</th>
+          </tr>
+        </thead>
+        <tbody><!-- rows injected --></tbody>
+      </table>
+    </div>
+
+    <footer>© 2025 AI Catalyst Studio — ROI Focused Artificial Intelligence Solutions</footer>
+  </div>
+
+  <script>
+    async function load() {
+      try {
+        const res = await fetch('reports.json', {cache:'no-cache'});
+        const data = await res.json();
+        const tbody = document.querySelector('#tbl tbody');
+        for (const r of data.reports) {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><strong>${r.name}</strong><div class="muted">${r.notes||''}</div></td>
+            <td><span class="tag">${r.assets}</span></td>
+            <td>${r.type}</td>
+            <td>${r.period}</td>
+            <td><a href="${r.url}" target="_blank" rel="noopener">View report</a></td>`;
+          tbody.appendChild(tr);
+        }
+      } catch (e) {
+        document.querySelector('#tbl tbody').innerHTML =
+          `<tr><td colspan="5" class="muted">No reports.json found yet.</td></tr>`;
+      }
+    }
+    load();
+  </script>
+</body>
+</html>
