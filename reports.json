@@ -1,0 +1,12 @@
+{
+  "reports": [
+    {
+      "name": "Crypto PPO–TFT Hybrid",
+      "assets": "BTCUSDT",
+      "type": "RL (PPO) + TFT forecasting",
+      "period": "2015–2025",
+      "url": "BTCUSDT_Report_2025-10-22_201221.html",
+      "notes": "Position sizing 2% with volatility scaling"
+    }
+  ]
+}
